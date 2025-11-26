@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation API - SD Canvas</title>
+    <link rel="stylesheet" href="assets/css/doc-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2>SD Canvas Docs</h2>
+                <span class="version">v1.0.0</span>
+            </div>
+            
+            <div class="nav-group">
+                <h3>Core</h3>
+                <ul>
+                    <li><a href="#streamdeckapp">StreamDeckApp</a></li>
+                    <li><a href="#streamdeckcanvas">StreamDeckCanvas</a></li>
+                    <li><a href="#streamdeckrenderer">Renderer</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group">
+                <h3>Widgets (Base)</h3>
+                <ul>
+                    <li><a href="#widget-base">Widget (Base)</a></li>
+                    <li><a href="#simplewidget">SimpleWidget</a></li>
+                    <li><a href="#functional_widget">@functional_widget</a></li>
+                    <li><a href="#button">Button</a></li>
+                    <li><a href="#progressbar">ProgressBar</a></li>
+                    <li><a href="#timer">Timer</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group">
+                <h3>Widgets (Avancés)</h3>
+                <ul>
+                    <li><a href="#linegraph">LineGraph</a></li>
+                    <li><a href="#radialgauge">RadialGauge</a></li>
+                    <li><a href="#piechart">PieChart</a></li>
+                    <li><a href="#spectrumvisualizer">SpectrumVisualizer</a></li>
+                    <li><a href="#rotaryvolume">RotaryVolume</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-group">
+                <h3>Dessin (Canvas)</h3>
+                <ul>
+                    <li><a href="#draw_rect">draw_rect</a></li>
+                    <li><a href="#draw_circle">draw_circle</a></li>
+                    <li><a href="#draw_text">draw_text</a></li>
+                    <li><a href="#draw_arc">draw_arc</a></li>
+                    <li><a href="#draw_gradient">draw_gradient_rect</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <header>
+                <h1>Documentation Technique</h1>
+                <p>Référence complète de l'API pour les développeurs.</p>
+            </header>
+
+            <!-- Core Section -->
+            <section id="core">
+                <h2 class="section-title">Core Components</h2>
+
+                <div id="streamdeckapp" class="api-card">
+                    <div class="api-header">
+                        <span class="tag class">class</span>
+                        <h3>StreamDeckApp</h3>
+                    </div>
+                    <p>Point d'entrée principal de l'application. Gère automatiquement le cycle de vie et la détection hardware.</p>
+                    
+                    <h4>Constructeur</h4>
+                    <pre><code class="python">StreamDeckApp(target_fps=15, use_hardware=True, debug_cols=5, debug_rows=3)</code></pre>
+                    
+                    <h4>Méthodes (Décorateurs)</h4>
+                    <div class="method">
+                        <code>@app.on_setup</code>
+                        <p>Appelé une fois au démarrage. Reçoit <code>(canvas, widgets)</code>.</p>
+                    </div>
+                    <div class="method">
+                        <code>@app.on_loop</code>
+                        <p>Appelé à chaque frame. Reçoit <code>(canvas, widgets, delta_time)</code>.</p>
+                    </div>
+                    <div class="method">
+                        <code>app.run()</code>
+                        <p>Lance la boucle principale (bloquant).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Widgets Base -->
+            <section id="widgets-base">
+                <h2 class="section-title">Système de Widgets</h2>
+
+                <div id="simplewidget" class="api-card">
+                    <div class="api-header">
+                        <span class="tag class">class</span>
+                        <h3>SimpleWidget</h3>
+                    </div>
+                    <p>Classe de base pour créer vos propres composants avec état. Surchargez <code>setup()</code>, <code>on_update(dt)</code> et <code>on_draw(canvas)</code>.</p>
+                    <pre><code class="python">class MyWidget(SimpleWidget):
+    def setup(self):
+        self.val = 0
+    
+    def on_draw(self, canvas):
+        canvas.draw_text(self.col, self.row, str(self.val))</code></pre>
+                </div>
+
+                <div id="functional_widget" class="api-card">
+                    <div class="api-header">
+                        <span class="tag decorator">@decorator</span>
+                        <h3>functional_widget</h3>
+                    </div>
+                    <p>Transforme une fonction simple en widget sans état (stateless).</p>
+                    <pre><code class="python">@functional_widget(width=1)
+def RedBox(self, canvas):
+    canvas.draw_rect(self.col, self.row, color='red')</code></pre>
+                </div>
+            </section>
+
+            <!-- Widgets List -->
+            <section id="standard-widgets">
+                <h2 class="section-title">Widgets Standards</h2>
+
+                <table class="widget-table">
+                    <thead>
+                        <tr>
+                            <th>Widget</th>
+                            <th>Arguments Clés</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="button">
+                            <td><strong>Button</strong></td>
+                            <td>icon, label, bg_color, icon_color</td>
+                            <td>Bouton standard avec icône et texte.</td>
+                        </tr>
+                        <tr id="progressbar">
+                            <td><strong>ProgressBar</strong></td>
+                            <td>progress (0.0-1.0), fill_color</td>
+                            <td>Barre de progression horizontale.</td>
+                        </tr>
+                        <tr id="timer">
+                            <td><strong>Timer</strong></td>
+                            <td>current_time, total_time</td>
+                            <td>Affiche un compte à rebours MM:SS.</td>
+                        </tr>
+                        <tr id="scrollingtext">
+                            <td><strong>ScrollingText</strong></td>
+                            <td>text, speed, color</td>
+                            <td>Texte défilant pour les titres longs.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Advanced Widgets -->
+            <section id="advanced-widgets">
+                <h2 class="section-title">Widgets Avancés</h2>
+
+                <div id="linegraph" class="api-card">
+                    <div class="api-header">
+                        <span class="tag class">class</span>
+                        <h3>LineGraph</h3>
+                    </div>
+                    <p>Graphique linéaire temps réel (sparkline).</p>
+                    <div class="method">
+                        <code>add_value(value: float)</code>
+                        <p>Ajoute un point au graphique (le plus ancien est supprimé).</p>
+                    </div>
+                </div>
+
+                <div id="radialgauge" class="api-card">
+                    <div class="api-header">
+                        <span class="tag class">class</span>
+                        <h3>RadialGauge</h3>
+                    </div>
+                    <p>Jauge circulaire type "compteur de vitesse".</p>
+                    <div class="method">
+                        <code>set_value(value: float)</code>
+                        <p>Met à jour l'aiguille/l'arc. Respecte min_val/max_val.</p>
+                    </div>
+                </div>
+
+                <div id="spectrumvisualizer" class="api-card">
+                    <div class="api-header">
+                        <span class="tag class">class</span>
+                        <h3>SpectrumVisualizer</h3>
+                    </div>
+                    <p>Visualiseur de spectre audio à barres verticales.</p>
+                    <div class="method">
+                        <code>set_values(values: List[float])</code>
+                        <p>Liste de floats entre 0.0 et 1.0 pour chaque barre.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Canvas API -->
+            <section id="canvas-api">
+                <h2 class="section-title">Canvas Drawing API</h2>
+                <p>Méthodes disponibles sur l'objet <code>canvas</code> passé aux widgets.</p>
+
+                <div class="method-list">
+                    <div id="draw_rect" class="method-item">
+                        <h4>draw_rect(col, row, width_cols=1, color='#FFF', radius=0)</h4>
+                        <p>Dessine un rectangle (arrondi ou non) sur la grille.</p>
+                    </div>
+
+                    <div id="draw_gradient" class="method-item">
+                        <h4>draw_gradient_rect(col, row, width_cols, height_rows, color_start, color_end)</h4>
+                        <p>Dessine un rectangle avec dégradé linéaire vertical ou horizontal.</p>
+                    </div>
+
+                    <div id="draw_circle" class="method-item">
+                        <h4>draw_circle(col, row, radius, color='#FFF')</h4>
+                        <p>Dessine un cercle centré sur un bouton.</p>
+                    </div>
+
+                    <div id="draw_arc" class="method-item">
+                        <h4>draw_arc(col, row, radius, start_angle, end_angle, color='#FFF')</h4>
+                        <p>Dessine un arc de cercle (utile pour jauges custom).</p>
+                    </div>
+
+                    <div id="draw_text" class="method-item">
+                        <h4>draw_text(col, row, text, size='normal', align='center')</h4>
+                        <p>Affiche du texte. Tailles : 'tiny', 'small', 'normal', 'large', 'huge'.</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    
+    <script src="assets/js/script.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

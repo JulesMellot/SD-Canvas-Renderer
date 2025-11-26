@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stream Deck Canvas Renderer</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo">SD Canvas Renderer</a>
+            <ul class="nav-links">
+                <li><a href="#features">Fonctionnalités</a></li>
+                <li><a href="#start">Démarrage</a></li>
+                <li><a href="#widgets">Widgets</a></li>
+                <li><a href="#api">API</a></li>
+                <li><a href="https://github.com/yourusername/streamdeck-canvas-renderer" class="btn-github">GitHub</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h1>Libérez votre Stream Deck</h1>
+            <p class="subtitle">Un moteur de rendu Canvas unifié en Python. Dessinez, animez et créez des interfaces complexes sans contraintes de boutons.</p>
+            <div class="cta-group">
+                <a href="#start" class="btn btn-primary">Commencer</a>
+                <code class="install-cmd">pip install streamdeck-canvas-renderer</code>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2>Pourquoi utiliser SD Canvas ?</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>🎨 Canvas Unifié</h3>
+                    <p>Oubliez les images par bouton. Dessinez sur toute la surface (360x216px pour Classic) comme sur un écran unique.</p>
+                </div>
+                <div class="card">
+                    <h3>🚀 Haute Performance</h3>
+                    <p>Optimisé pour le temps réel. Animations fluides à 30 FPS, gestion partielle du redessin et cache intelligent.</p>
+                </div>
+                <div class="card">
+                    <h3>🧩 Widgets Riches</h3>
+                    <p>Gauges, Graphiques, VUmètres, Animations Matrix... Une bibliothèque complète prête à l'emploi.</p>
+                </div>
+                <div class="card">
+                    <h3>🛠️ Developer Experience</h3>
+                    <p>Mode Debug sans hardware, Hot-reloading simulé, et API intuitive basée sur des décorateurs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="start" class="quick-start">
+        <div class="container">
+            <h2>Démarrage Rapide</h2>
+            <p>Créez votre première application en moins de 15 lignes.</p>
+            
+            <div class="code-block">
+                <pre><code class="language-python">from streamdeck_canvas import StreamDeckApp, functional_widget
+
+# 1. Initialiser l'application
+app = StreamDeckApp(target_fps=30)
+
+# 2. Créer un composant simple
+@functional_widget(width=2)
+def HelloBadge(self, canvas):
+    # Dessin vectoriel
+    canvas.draw_rect(self.col, self.row, color='#FF6B35', radius=10)
+    canvas.draw_text(self.col, self.row, "Hello World!", color='white')
+
+# 3. Assembler
+@app.on_setup
+def setup(canvas, widgets):
+    widgets.add(HelloBadge(1, 1))
+
+# 4. Lancer
+if __name__ == "__main__":
+    app.run()</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section id="widgets" class="showcase">
+        <div class="container">
+            <h2>Bibliothèque de Widgets</h2>
+            <div class="grid">
+                <div class="widget-item">
+                    <h4>Charts & Data</h4>
+                    <ul>
+                        <li><code>LineGraph</code> : Courbes temps réel</li>
+                        <li><code>RadialGauge</code> : Jauges circulaires</li>
+                        <li><code>PieChart</code> : Diagrammes</li>
+                    </ul>
+                </div>
+                <div class="widget-item">
+                    <h4>Audio</h4>
+                    <ul>
+                        <li><code>SpectrumVisualizer</code> : Analyseur spectral</li>
+                        <li><code>RotaryVolume</code> : Boutons rotatifs</li>
+                        <li><code>VUMeter</code> : Niveaux audio</li>
+                    </ul>
+                </div>
+                <div class="widget-item">
+                    <h4>Animations</h4>
+                    <ul>
+                        <li><code>MatrixRain</code> : Effet pluie numérique</li>
+                        <li><code>BreathingRect</code> : Pulsations</li>
+                        <li><code>ScrollingText</code> : Texte défilant</li>
+                    </ul>
+                </div>
+                <div class="widget-item">
+                    <h4>Basiques</h4>
+                    <ul>
+                        <li><code>Button</code> : Boutons interactifs</li>
+                        <li><code>ProgressBar</code> : Barres de progression</li>
+                        <li><code>Timer</code> : Chronomètres</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Stream Deck Canvas Renderer. Sous licence MIT.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
